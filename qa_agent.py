@@ -93,6 +93,21 @@ def distilbert_qa():
     #         corrected_answer += ' ' + word
     # print("Answer: ", corrected_answer)
 
+class QA_Agent():
+    def __init__(self, model="bert-large-uncased-whole-word-masking-finetuned-squad") -> None:
+        self.question = ""
+        self.context = ""
+        self.answer = ""
+        self.pipeline = pipeline('question-answering', model=model, tokenizer=model)
+    
+    def predict(self, question, context):
+        qa_input = {
+            'question': question,
+            'context': context
+        }
+        result = self.pipeline(qa_input)
+        return result['answer']
+
 if __name__ == '__main__':
     print("Begin QA task")
     print("Question: ", ques2)
