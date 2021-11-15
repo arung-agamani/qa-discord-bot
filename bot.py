@@ -1,6 +1,10 @@
 import discord
 from qa_agent import QA_Agent
 from es_agent import ElasticSearchAgent
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 client = discord.Client()
 
@@ -29,4 +33,4 @@ async def on_message(message):
         else:
             await message.channel.send("No data found on that question. Sorry, Traveler")
 
-client.run('Njk2Nzg0MDU1OTExNDQ4NjQ3.XotwuA.62zB4p6YByUPrdraMTr8FbWRrjc')
+client.run(os.environ.get("BOT_TOKEN"))
