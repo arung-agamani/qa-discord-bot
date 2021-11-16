@@ -48,6 +48,16 @@ def bert_qa():
             corrected_answer += ' ' + word
     print("Answer: ", corrected_answer)
 
+def bert_qa_pipeline():
+    MODEL = 'bert-large-uncased-whole-word-masking-finetuned-squad'
+    nlp = pipeline('question-answering', model=MODEL, tokenizer=MODEL)
+    qa_input = {
+        'question': ques2,
+        'context': para2
+    }
+    res = nlp(qa_input)
+    print("Answer: ", res['answer'])
+
 def xlm_qa():
     MODEL = 'deepset/xlm-roberta-large-squad2'
     # model = AutoModelForQuestionAnswering.from_pretrained(MODEL)
@@ -106,7 +116,33 @@ class QA_Agent():
             'context': context
         }
         result = self.pipeline(qa_input)
-        return result['answer']
+        return (result['answer'], result['score'])
+
+class QA_AgentMultiple():
+    def __init__(self) -> None:
+        MODEL1 = 'bert-large-uncased-whole-word-masking-finetuned-squad'
+        MODEL2 = 'deepset/xlm-roberta-large-squad2'
+        MODEL3 = 'twmkn9/distilbert-base-uncased-squad2'
+        self.question = ""
+        self.context = ""
+        self.answer = ""
+        self.pipeline1 = pipeline('question-answering', model=MODEL1, tokenizer=MODEL1)
+        self.pipeline2 = pipeline('question-answering', model=MODEL2, tokenizer=MODEL2)
+        self.pipeline3 = pipeline('question-answering', model=MODEL3, tokenizer=MODEL3)
+    
+    def predict(self, question, context):
+        res = []
+        qa_input = {
+            'question': question,
+            'context': context
+        }
+        result1 = self.pipeline1(qa_input)
+        result2 = self.pipeline2(qa_input)
+        result3 = self.pipeline3(qa_input)
+        res.append((result1['answer'], result1['score'], 'BERT-Large-Uncased'))
+        res.append((result2['answer'], result2['score'], 'XLM-RoBERTa-Large'))
+        res.append((result3['answer'], result3['score'], 'distilBERT-Base-Uncased'))
+        return res
 
 if __name__ == '__main__':
     print("Begin QA task")
