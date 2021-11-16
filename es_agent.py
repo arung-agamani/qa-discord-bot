@@ -1,5 +1,8 @@
 from elasticsearch import Elasticsearch
 
+# Definisi dari class ElasticSearchAgent
+# Adalah agent yang menjadi Document Retrieval dengan melakukan search
+# terhadap koleksi dokumen yang ada pada database
 class ElasticSearchAgent():
     def __init__(self, host, port, index_name) -> None:
         self.index_name = index_name
@@ -11,6 +14,8 @@ class ElasticSearchAgent():
         self.es = Elasticsearch([self.config])
         print("ElasticSearch Initialization Complete")
     
+    # Pencaharian akan berdasarkan pertanyaan yang diberikan dengan mengembalikan
+    # N buah dokumen yang paling relevan dengan pertanyaan yang diberikan.
     def search(self, question, n_result):
         query = {
             'query': {
