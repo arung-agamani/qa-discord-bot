@@ -1,3 +1,9 @@
+""" 
+    13518005 Arung Agamani Budi Putera
+    13518036 Fikra Hadi Ramadhan
+    13518140 Hansel Grady Daniel Thamrin
+"""
+
 from re import search
 import discord
 from qa_agent import QA_Agent, QA_AgentMultiple
